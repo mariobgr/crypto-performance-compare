@@ -15,6 +15,7 @@
 
 # Build and Environment
 dist/
+*.env
 
 # Log Files
 *.log
