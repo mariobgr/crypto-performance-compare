@@ -1,0 +1,23 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with 'go test -c'
+*.test
+
+# IDE directories
+.idea
+.vscode
+.schemas
+
+# Build and Environment
+dist/
+
+# Log Files
+*.log
+
+# macOS files
+.DS_Store
