@@ -15,10 +15,10 @@ type Client struct {
 }
 
 type Response struct {
-	Symbol string `json:"symbol"`
-	Name   string `json:"name"`
-	Price  string `json:"price"`
-	Delta  string `json:"delta_1h"`
+	Symbol *string `json:"symbol" jsonschema:"required"`
+	Name   *string `json:"name" jsonschema:"required"`
+	Price  *string `json:"price" jsonschema:"required"`
+	Delta  *string `json:"delta_1h" jsonschema:"required"`
 }
 
 // NewClient returns *Client with config from env
@@ -50,7 +50,7 @@ func (c *Client) GetInfo(symbol string) (Response, error) {
 
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return response, fmt.Errorf("reading response body: %w", err)
+		return response, fmt.Errorf("unmarshalling response body: %w", err)
 	}
 
 	return response, nil
