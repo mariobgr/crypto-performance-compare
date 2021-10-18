@@ -53,5 +53,9 @@ func (c *Client) GetInfo(symbol string) (Response, error) {
 		return response, fmt.Errorf("unmarshalling response body: %w", err)
 	}
 
+	if response == (Response{}) {
+		return response, fmt.Errorf("empty response returned")
+	}
+
 	return response, nil
 }
