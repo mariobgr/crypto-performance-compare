@@ -5,17 +5,15 @@ import (
 	"crypto-performance-compare/httpservice"
 	"crypto-performance-compare/utils"
 	"github.com/joho/godotenv"
-	"time"
 )
 
 func main() {
-	start := time.Now()
-
 	// Load env vars
 	godotenv.Load()
 
 	// Init custom logger
 	logger := utils.NewLogger()
+	logger.Println("Starting service....")
 
 	// Init cache
 	cache := crypto.NewCache()
@@ -30,11 +28,9 @@ func main() {
 		return
 	}
 
-	err = httpservice.NewServer(cache)
+	err = httpservice.NewServer(logger, cache)
 	if err != nil {
 		logger.Println(utils.ColorError, "Error starting HTTP server:", err.Error())
 		return
 	}
-
-	logger.Println(utils.ColorSuccess, "Successfully init app in", time.Since(start), "server running on localhost" + utils.GetPort())
 }

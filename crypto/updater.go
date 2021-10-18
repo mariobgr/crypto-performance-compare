@@ -29,7 +29,7 @@ func (u *Updater) UpdateAll() error {
 
 	// Eagerly update all
 	for _, item := range items {
-		u.logger.Println("Start update for", item)
+		u.logger.Println("Starting update for", item)
 		u.Update(item)
 	}
 
