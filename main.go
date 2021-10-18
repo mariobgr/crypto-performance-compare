@@ -28,7 +28,11 @@ func main() {
 		return
 	}
 
-	err = httpservice.NewServer(logger, cache)
+	// Init & start HTTP server
+	srv := httpservice.NewServer(cache)
+
+	logger.Println("Starting HTTP server on http://localhost" + utils.GetPort())
+	err = srv.Start()
 	if err != nil {
 		logger.Println(utils.ColorError, "Error starting HTTP server:", err.Error())
 		return
