@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto-performance-compare/crypto"
+	"crypto-performance-compare/httpservice"
 	"crypto-performance-compare/utils"
 	"github.com/joho/godotenv"
 	"time"
@@ -29,13 +30,11 @@ func main() {
 		return
 	}
 
-	// TODO: Make service run indefinitely in background
-	time.Sleep(10 * time.Second)
+	err = httpservice.NewServer(cache)
+	if err != nil {
+		logger.Println(utils.ColorError, "Error starting HTTP server:", err.Error())
+		return
+	}
 
-	// TODO: Remove debug
-	logger.Println(cache.Read("BTC"))
-	logger.Println(cache.Read("ETH"))
-	logger.Println(cache.Read("SHIB"))
-
-	logger.Println(utils.ColorSuccess, "Successfully init app in", time.Since(start))
+	logger.Println(utils.ColorSuccess, "Successfully init app in", time.Since(start), "server running on localhost" + utils.GetPort())
 }

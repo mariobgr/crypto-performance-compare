@@ -16,3 +16,7 @@ func GetCurrencies() []string {
 	items := GetEnv("TRACK_LIST", "")
 	return strings.Split(items, ",")
 }
+
+func GetPort() string {
+	return GetEnv("SERVER_PORT", ":8080")
+}

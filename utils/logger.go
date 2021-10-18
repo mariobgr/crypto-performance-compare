@@ -12,6 +12,6 @@ const (
 )
 
 func NewLogger() *log.Logger {
-	logger := log.New(os.Stdout, "", log.Ldate | log.Ltime)
+	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	return logger
 }
