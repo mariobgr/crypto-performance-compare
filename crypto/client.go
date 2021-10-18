@@ -25,12 +25,12 @@ type Response struct {
 }
 
 // NewClient returns *Client with config from env
-func NewClient(baseURL string) *Client {
+func NewClient(baseURL string, cache *Cache) *Client {
 	return &Client{
 		baseURL:      baseURL,
 		apiKey:       utils.GetEnv("API_KEY", "default"),
 		baseCurrency: utils.GetEnv("BASE_CURRENCY", "USD"),
-		Cache:        NewCache(),
+		Cache:        cache,
 	}
 }
 

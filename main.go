@@ -2,15 +2,9 @@ package main
 
 import (
 	"crypto-performance-compare/crypto"
-	"fmt"
+	"crypto-performance-compare/utils"
 	"github.com/joho/godotenv"
-	"os"
 	"time"
-)
-
-var (
-	colorSuccess = "\033[32m"
-	colorError   = "\033[31m"
 )
 
 func main() {
@@ -19,29 +13,29 @@ func main() {
 	// Load env vars
 	godotenv.Load()
 
-	// Init Crypto Client
-	client := crypto.NewClient(os.Getenv("BASE_URL"))
+	// Init custom logger
+	logger := utils.NewLogger()
 
-	// TODO: Read list of tracked coins from .env
-	symbol := "BTC"
-	res, err := client.GetInfo(symbol)
+	// Init cache
+	cache := crypto.NewCache()
+
+	// Init Crypto Updater
+	updater := crypto.NewUpdater(logger, cache)
+
+	// Start the continuous update procedure
+	err := updater.UpdateAll()
 	if err != nil {
-		fmt.Println(colorError, "error getting info for BTC:", err.Error())
+		logger.Println(utils.ColorError, "Error starting the update procedure:", err.Error())
 		return
 	}
 
-	symbol2 := "ETH"
-	res2, err := client.GetInfo(symbol2)
-	if err != nil {
-		fmt.Println(colorError, "error getting info for BTC:", err.Error())
-		return
-	}
+	// TODO: Make service run indefinitely in background
+	time.Sleep(10 * time.Second)
 
-	client.Cache.Add(symbol, res)
-	client.Cache.Add(symbol2, res2)
+	// TODO: Remove debug
+	logger.Println(cache.Read("BTC"))
+	logger.Println(cache.Read("ETH"))
+	logger.Println(cache.Read("SHIB"))
 
-	fmt.Println(client.Cache.Read(symbol))
-	fmt.Println(client.Cache.Read(symbol2))
-
-	fmt.Println(colorSuccess, "Successfully init app in", time.Since(start))
+	logger.Println(utils.ColorSuccess, "Successfully init app in", time.Since(start))
 }

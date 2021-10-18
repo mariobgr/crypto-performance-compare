@@ -1,10 +1,18 @@
 package utils
 
-import "os"
+import (
+	"os"
+	"strings"
+)
 
 func GetEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
 	}
 	return fallback
+}
+
+func GetCurrencies() []string {
+	items := GetEnv("TRACK_LIST", "")
+	return strings.Split(items, ",")
 }
