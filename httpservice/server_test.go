@@ -14,8 +14,8 @@ func TestHTTPServer(t *testing.T) {
 	srv := httpservice.NewServer(cache)
 
 	// Kill after some time
-	go func () {
-		time.Sleep(1*time.Second)
+	go func() {
+		time.Sleep(1 * time.Second)
 		srv.Shutdown(context.Background())
 	}()
 

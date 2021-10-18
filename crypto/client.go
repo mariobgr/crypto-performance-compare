@@ -21,7 +21,7 @@ type Response struct {
 	Name   string `json:"name"`
 	Price  string `json:"price"`
 	Delta  string `json:"delta_1h"`
-	Time   time.Time
+	Time   string
 }
 
 // NewClient returns *Client with config from env
@@ -61,7 +61,7 @@ func (c *Client) GetInfo(symbol string) (Response, error) {
 		return response, fmt.Errorf("empty response returned")
 	}
 
-	response.Time = time.Now()
+	response.Time = time.Now().Format("2006-01-02T15:04:05")
 
 	return response, nil
 }

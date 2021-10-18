@@ -50,7 +50,7 @@ func (u *Updater) UpdateAll() error {
 func (u *Updater) Update(symbol string) {
 	res, err := u.client.GetInfo(symbol)
 	if err != nil {
-		u.logger.Println(utils.ColorError, "error getting info for BTC:", err.Error(), utils.ColorReset)
+		u.logger.Println(utils.ColorError, "error getting info for", symbol, err.Error(), utils.ColorReset)
 		return
 	}
 

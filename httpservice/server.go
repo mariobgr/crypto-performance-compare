@@ -3,7 +3,6 @@ package httpservice
 import (
 	"crypto-performance-compare/crypto"
 	"crypto-performance-compare/utils"
-	"html/template"
 	"net/http"
 )
 
@@ -16,27 +15,7 @@ type HTTPHandler struct {
 }
 
 func (h *HTTPHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	data := make(map[string]interface{})
-	data["Title"] = "Fake Titile"
-
-	res, err := h.cache.Read("BTC")
-	if err != nil {
-		http.Error(w, "no data found for BTC", http.StatusNotFound)
-	}
-
-	data["Data"] = res
-
-	tmpl, err := template.ParseFiles("./httpservice/template.html")
-	if err != nil {
-		http.Error(w, "error parsing template:" + err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	err = tmpl.Execute(w, data)
-	if err != nil {
-		http.Error(w, "error serving data:" + err.Error(), http.StatusInternalServerError)
-		return
-	}
+	h.ServeStats(w, r)
 }
 
 func NewServer(cache *crypto.Cache) Server {
@@ -45,7 +24,7 @@ func NewServer(cache *crypto.Cache) Server {
 	return Server{
 		&http.Server{
 			Addr:    utils.GetPort(),
-			Handler:  &handler,
+			Handler: &handler,
 		},
 	}
 }
@@ -54,7 +33,6 @@ func (s Server) Start() error {
 	if err := s.ListenAndServe(); err != http.ErrServerClosed {
 		return err
 	}
-
 	return nil
 }
 

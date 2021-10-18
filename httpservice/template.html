@@ -1,20 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>{{.Title}}</title>
+    <title>{{.title}}</title>
+    <meta http-equiv="refresh" content="15">
+    <script>
+        window.onload = function () {
 
-    <style>
-        code {
-            font-family: Consolas,"courier new";
-            color: crimson;
-            background-color: #f1f1f1;
-            padding: 2px;
-            font-size: 105%;
+            var chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                    text: "{{.title}}"
+                },
+                axisY2: {
+                    prefix: "$",
+                },
+                toolTip: {
+                    content: "{name}: {y}",
+                    shared: true
+                },
+                animationEnabled: true,
+                legend: {
+                    cursor: "pointer",
+                    verticalAlign: "top",
+                    horizontalAlign: "center",
+                    dockInsidePlotArea: true,
+                    itemclick: toogleDataSeries
+                },
+                data: [
+                    {{range $key, $values := .dataItems}}
+                    {
+                        type:"line",
+                        axisYType: "secondary",
+                        name: "{{$key}}",
+                        showInLegend: true,
+                        markerSize: 0,
+                        yValueFormatString: "$#,##",
+                        dataPoints: [
+                            {{range $values}}
+                            { x: new Date({{.Time}}), y: parseFloat({{.Price}}) },
+                            {{ end }}
+                        ]
+                    },
+                    {{ end }}
+                ]
+            });
+
+            chart.render();
+
+            function toogleDataSeries(e) {
+                if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else {
+                    e.dataSeries.visible = true;
+                }
+
+                chart.render();
+            }
+
         }
-    </style>
+    </script>
 </head>
 <body>
-    <code>{{.Data}}</code>
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 </html>

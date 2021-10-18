@@ -14,11 +14,11 @@ func TestCache(t *testing.T) {
 	now := time.Now()
 
 	response := crypto.Response{
-		symbol,
-		"Bitcoin",
-		"60000",
-		"15%",
-		now,
+		Symbol: symbol,
+		Name:   "Bitcoin",
+		Price:  "60000",
+		Delta:  "15%",
+		Time:   now.Format("2006-01-02T15:04:05"),
 	}
 
 	cache.Add(symbol, response)
