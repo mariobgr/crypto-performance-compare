@@ -18,8 +18,8 @@ func TestClient_GetInfoSuccess(t *testing.T) {
 	client := crypto.NewClient(ts.URL)
 	res, err := client.GetInfo("BTC")
 	require.NoError(t, err)
-	assert.NotNil(t, res.Name)
-	assert.NotNil(t, res.Price)
+	assert.NotEmpty(t, res.Name)
+	assert.NotEmpty(t, res.Price)
 }
 
 func TestClient_GetInfoFailure(t *testing.T) {
@@ -30,8 +30,8 @@ func TestClient_GetInfoFailure(t *testing.T) {
 	client := crypto.NewClient(ts.URL)
 	res, err := client.GetInfo("BTC")
 	require.Error(t, err)
-	assert.Nil(t, res.Name)
-	assert.Nil(t, res.Price)
+	assert.Empty(t, res.Name)
+	assert.Empty(t, res.Price)
 }
 
 var successResponse = `{

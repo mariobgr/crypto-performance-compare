@@ -6,19 +6,22 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 type Client struct {
 	baseURL      string
 	apiKey       string
 	baseCurrency string
+	Cache        *Cache
 }
 
 type Response struct {
-	Symbol *string `json:"symbol" jsonschema:"required"`
-	Name   *string `json:"name" jsonschema:"required"`
-	Price  *string `json:"price" jsonschema:"required"`
-	Delta  *string `json:"delta_1h" jsonschema:"required"`
+	Symbol string `json:"symbol"`
+	Name   string `json:"name"`
+	Price  string `json:"price"`
+	Delta  string `json:"delta_1h"`
+	Time   time.Time
 }
 
 // NewClient returns *Client with config from env
@@ -27,6 +30,7 @@ func NewClient(baseURL string) *Client {
 		baseURL:      baseURL,
 		apiKey:       utils.GetEnv("API_KEY", "default"),
 		baseCurrency: utils.GetEnv("BASE_CURRENCY", "USD"),
+		Cache:        NewCache(),
 	}
 }
 
@@ -56,6 +60,8 @@ func (c *Client) GetInfo(symbol string) (Response, error) {
 	if response == (Response{}) {
 		return response, fmt.Errorf("empty response returned")
 	}
+
+	response.Time = time.Now()
 
 	return response, nil
 }
