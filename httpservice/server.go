@@ -27,7 +27,7 @@ func (h *HTTPHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
-func NewServer (logger *log.Logger, cache *crypto.Cache) error {
+func NewServer(logger *log.Logger, cache *crypto.Cache) error {
 	logger.Println("Starting HTTP server on http://localhost" + utils.GetPort())
 
 	handler := newHandler(cache)
